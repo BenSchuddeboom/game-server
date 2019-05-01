@@ -1,13 +1,17 @@
+import setupDb from './db'
+
 const express = require('express')
 const bodyparser = require('body-parser')
 const socket = require('socket.io')
 
-const port = process.env.PORT || 4000
+const expressPort = process.env.EXPRESS_PORT || 4000
+// temp different port for Db
+const databasePort = process.env.DATABASE_PORT || 5000
 
 const app = express()
 
-const server = app.listen(port, () => {
-    console.log('Server ready and listening on port ' + port)
+const server = app.listen(expressPort, () => {
+    console.log('Server ready and listening on port ' + expressPort)
 })
 
 const io = socket(server)
@@ -44,3 +48,8 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('playerMoved', players[socket.id]);
     });
 })
+
+setupDb()
+    .then(_ =>
+        app.listen(databasePort, () => console.log(`listenening on port: ${databasePort}`)))
+    .catch(error => console.log('index.ts ', error))
