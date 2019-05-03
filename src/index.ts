@@ -50,6 +50,7 @@ io.on('connection', (socket) => {
             console.log(`User [${socket.id}] disconnected. `)
             delete players[socket.id]
             io.emit('disconnect', socket.id)
+            io.emit('setPlayers', players)
         })
 
     socket.on('playerMovement', (movementData) => {
@@ -65,12 +66,14 @@ io.on('connection', (socket) => {
         cookie.y = Math.floor(Math.random() * 1425) + 50;
         io.emit('spawnCookie', cookie);
         //not sure if we need this scoreupdate emit, but hey.
-        io.emit('scoreUpdate', players[socket.id]);
+        io.emit('setPlayers', players);
+        
         console.log(players)
     });
 
     socket.on('username', function (data) {
         players[socket.id].name = data.username
+        io.emit('setPlayers', players)
         console.log(players)
     })
 })
