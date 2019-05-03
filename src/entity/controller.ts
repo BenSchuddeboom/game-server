@@ -7,7 +7,7 @@ export default class ScoreboardController {
     @Get('/scores/:userBySocket')
     async getScore(
         @Param('userBySocket') userBySocket: number
-    ){
+    ){ 
         const score = await Scoreboard.findOne(userBySocket)
         if (score) {
           return score
