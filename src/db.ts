@@ -22,7 +22,7 @@ class CustomNamingStrategy extends DefaultNamingStrategy implements NamingStrate
     return snakeCase(propertyName);
   }
 }
-
+//hey
 export default () =>
   createConnection({
     type: "postgres",
