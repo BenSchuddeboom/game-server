@@ -2,6 +2,11 @@ import "reflect-metadata";
 import { createExpressServer } from "routing-controllers";
 import setupDb from './db'
 import ScoreboardController from './entity/controller'
+import * as request from "superagent";
+
+const URL = 'http://balls-mp.herokuapp.com'
+    //172.16.30.249 -- Albert
+    //172.16.30.221 -- Ben
 
 const app = createExpressServer({
     controllers: [
@@ -61,6 +66,11 @@ io.on('connection', (socket) => {
 
     socket.on('cookieCollected', function () {
         players[socket.id].score += 1
+
+        request
+            .put(`${URL}/scores/${socket.id}`)
+            //.catch(i => console.log('request catch is angry at you.'))
+
         cookie.x = Math.floor(Math.random() * 1925) + 50;
         cookie.y = Math.floor(Math.random() * 1425) + 50;
         io.emit('spawnCookie', cookie);
@@ -72,6 +82,14 @@ io.on('connection', (socket) => {
     socket.on('username', function (data) {
         players[socket.id].name = data.username
         console.log(players)
+
+        request
+            .post(`${URL}/scores`)
+            .set('Content-Type', 'application/json')
+            .send({ name: data.username })
+            .send({ socketId: socket.id })
+            .send({ score: '0' })
+            .catch(console.error)
     })
 })
 

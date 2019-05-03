@@ -1,14 +1,17 @@
-import { JsonController, Get, Param, Post, HttpCode, Body } from 'routing-controllers'
+import { JsonController, Get, Param, Post, HttpCode, Body, Put } from 'routing-controllers'
 import { Scoreboard } from './scoreboard';
 
 @JsonController()
 export default class ScoreboardController {
 
-    @Get('/scores/:id')
-    getScore(
-        @Param('id') id: number
+    @Get('/scores/:userBySocket')
+    async getScore(
+        @Param('userBySocket') userBySocket: number
     ){
-        return Scoreboard.findOne(id)
+        const score = await Scoreboard.findOne(userBySocket)
+        if (score) {
+          return score
+        }
     }
 
     @Get('/scores')
@@ -24,5 +27,19 @@ export default class ScoreboardController {
     ) {
       return score.save()
     }
+
+    @Put('/scores/:userBySocket')
+    async incrementScore(
+      @Param('userBySocket') userBySocket: string
+    ){
+      const player = await Scoreboard.findOne(userBySocket)
+
+      if (player) {
+        player.score += 1
+        await player.save()
+      } else {
+      return console.log('end of incrementScore block')
+    }
+  }
     
 }

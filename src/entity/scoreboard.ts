@@ -1,4 +1,4 @@
-import {Entity, Column, PrimaryColumn} from "typeorm";
+import {Entity, Column, PrimaryColumn, PrimaryGeneratedColumn} from "typeorm";
 import { BaseEntity } from 'typeorm/repository/BaseEntity'
 
 
@@ -6,11 +6,11 @@ import { BaseEntity } from 'typeorm/repository/BaseEntity'
 export class Scoreboard extends BaseEntity {
 
     @PrimaryColumn()
-    id: number;
+    socketId?: string;
 
     @Column('text')
     name: string;
 
-    @Column()
+    @Column('int')
     score: number;
 }
