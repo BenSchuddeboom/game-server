@@ -26,16 +26,16 @@ app.use(
 const players = {}
 
 const cookie = {
-  x: Math.floor(Math.random() * 700) + 50,
-  y: Math.floor(Math.random() * 500) + 50
+  x: Math.floor(Math.random() * 1925) + 50,
+  y: Math.floor(Math.random() * 1425) + 50
 };
 
 io.on('connection', (socket) => {
         console.log(`User [${socket.id}] connected. `)
 
         players[socket.id] = {
-            x: Math.floor(Math.random() * 700) + 50,
-            y: Math.floor(Math.random() * 500) + 50,
+            x: Math.floor(Math.random() * 1925) + 50,
+            y: Math.floor(Math.random() * 1425) + 50,
             playerId: socket.id,
             score: 0,
             name: null
@@ -43,7 +43,7 @@ io.on('connection', (socket) => {
 
         socket.emit('currentPlayers', players)
         socket.broadcast.emit('newPlayer', players[socket.id])
-        socket.emit('spawnCookie', cookie);
+        socket.emit('spawnCookie', cookie)
         //console.log(players)
 
         socket.on('disconnect', () => {
@@ -61,13 +61,18 @@ io.on('connection', (socket) => {
 
     socket.on('cookieCollected', function () {
         players[socket.id].score += 1
-        cookie.x = Math.floor(Math.random() * 700) + 50;
-        cookie.y = Math.floor(Math.random() * 500) + 50;
+        cookie.x = Math.floor(Math.random() * 1925) + 50;
+        cookie.y = Math.floor(Math.random() * 1425) + 50;
         io.emit('spawnCookie', cookie);
         //not sure if we need this scoreupdate emit, but hey.
         io.emit('scoreUpdate', players[socket.id]);
         console.log(players)
     });
+
+    socket.on('username', function (data) {
+        players[socket.id].name = data.username
+        console.log(players)
+    })
 })
 
 setupDb()

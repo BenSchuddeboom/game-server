@@ -4,7 +4,7 @@ import { Scoreboard } from './scoreboard';
 @JsonController()
 export default class ScoreboardController {
 
-    @Get('/score/:id')
+    @Get('/scores/:id')
     getScore(
         @Param('id') id: number
     ){
@@ -17,7 +17,7 @@ export default class ScoreboardController {
       return { score } 
     }
 
-    @Post('/score')
+    @Post('/scores')
     @HttpCode(201)
     createScore(
       @Body() score: Scoreboard
