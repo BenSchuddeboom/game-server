@@ -6,7 +6,7 @@ import { BaseEntity } from 'typeorm/repository/BaseEntity'
 export class Scoreboard extends BaseEntity {
 
     @PrimaryGeneratedColumn()
-    id?: number;
+    id: number;
 
     @Column('text')
     socketId: string;
@@ -15,5 +15,5 @@ export class Scoreboard extends BaseEntity {
     name: string;
 
     @Column()
-    score?: number;
+    score: number;
 }
