@@ -1,16 +1,19 @@
-import {Entity, Column, PrimaryColumn} from "typeorm";
+import {Entity, Column, PrimaryColumn, PrimaryGeneratedColumn} from "typeorm";
 import { BaseEntity } from 'typeorm/repository/BaseEntity'
 
 
 @Entity()
 export class Scoreboard extends BaseEntity {
 
-    @PrimaryColumn()
-    id: number;
+    @PrimaryGeneratedColumn()
+    id?: number;
+
+    @Column('text')
+    socketId: string;
 
     @Column('text')
     name: string;
 
     @Column()
-    score: number;
+    score?: number;
 }
